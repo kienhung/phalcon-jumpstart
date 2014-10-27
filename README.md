@@ -9,3 +9,6 @@
 5. PHP-APC Extension
 7. PHP-mcrypt
 8. PHP-openssl
+
+Create cache directory for Volt from ROOT_PATH execute command: mkdir app/cache app/cache/view
+And grant write permission for it: chmod -R 777 app/cache
