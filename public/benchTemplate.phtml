@@ -1,0 +1,71 @@
+
+<style type="text/css">
+    .profiler-body {
+        position: fixed;
+        background-color: #2c3e50;
+        color: #bdc3c7;
+        border-top: 5px solid #2ecc71;
+        padding: 20px;
+        bottom: 0;
+        width: 100%;
+        font-size: 14px;
+        line-height: 1.75;
+        z-index:9999;
+    }
+    .profiler-left {
+        padding: 6px;
+        float: left;
+        display: block;
+        width: 20%;
+    }
+    .profiler-right {
+        padding: 6px;
+        float: left;
+        width: 80%;
+        border-left: 1px solid #777;
+    }
+    .bold_blue {
+        font-size: 16px;
+        color: #2ecc71;
+    }
+    .bold_orange {
+        font-size: 16px;
+        color: #e74c3c;
+    }
+    .query-screen {
+        font-size: 11px;
+        padding: 4px;
+        background-color: #34495e;
+        color: #f1c40f;
+    }
+</style>
+
+<div class="profiler-body">
+
+<?php $profiles = $di->get('profiler')->getProfiles(); ?>
+
+<div class="profiler-left">
+    <strong>Execute time:</strong> <span class="bold_orange"><?php echo $bench->getTime(false, '%d%s') ?></span> </br>
+    <strong>Memory Peak:</strong> <span class="bold_blue"><?php echo $bench->getMemoryPeak(false, '%.3f%s') ?></span> </br>
+    <strong>Memory Usage:</strong> <span class="bold_blue"><?php echo $bench->getMemoryUsage() ?></span> </br>
+
+    <?php if (!empty($profiles)) { ?>
+    <strong>Total Query:</strong> <span class="bold_blue"><?php echo $di->get('profiler')->getNumberTotalStatements() ?></span> </br>
+    <strong>Total Query Elapsed Time:</strong> <span class="bold_blue"><?php echo \Other\Ubench::readableElapsedTime($di->get('profiler')->getTotalElapsedSeconds(), '%d%s') ?></span> </br>
+    <?php } ?>
+</div>
+
+<?php if (!empty($profiles)) { ?>
+<div class="profiler-right">
+    <strong>SQL Statement:</strong> </br>
+    <div class="query-screen">
+    <?php foreach ($profiles as $profile) { ?>
+        <?php echo $profile->getSQLStatement() ?> </br>
+    <?php } ?>
+    </div>
+</div>
+<?php } ?>
+
+<?php $di->get('profiler')->reset(); ?>
+</div>
+
